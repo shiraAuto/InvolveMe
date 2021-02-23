@@ -1,5 +1,6 @@
 package pageobjects;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,22 +18,41 @@ public class ProjectsPage extends BasePage{
     private List<WebElement> menuList;
   */
     @FindBy(css=".dropdown>button")
+    @CacheLookup
     private WebElement userMenuBtn;
 
-    @FindBy(css=".dropdown>a>div>div:nth-child(2)>.flex") //  .flex>.fas
+    @FindBy(css=".flex>.fas") //     .dropdown>a>div>div:nth-child(2)>.flex
+    @CacheLookup
     private WebElement openUserMenuBtn;
 
+    @FindBy(css=".dropdown-menu>li:nth-child(13)>a")
+    @CacheLookup
     private WebElement logOutBtn;
 
     public ProjectsPage(WebDriver driver) {super(driver); }
 
     public boolean isUserMenuVisible()
     {
-
         if(userMenuBtn.isDisplayed())
             return true;
         else
             return false;
+    }
+
+    public void clickMenuItem(WebElement itemToClick)
+    {
+        click(openUserMenuBtn);
+        // explicit wait - to wait for the compose button to be click-able
+        WebDriverWait wait = new WebDriverWait(driver,30);
+        wait.until(ExpectedConditions.visibilityOfAllElements());
+
+        List<WebElement> menuList =driver.findElements((By.cssSelector(".dropdown-menu>li")));
+
+        for (WebElement item : menuList)
+        {
+            if(item.getText().contentEquals(itemToClick.getText()))
+                click(item);
+        }
 
     }
 
@@ -41,16 +61,10 @@ public class ProjectsPage extends BasePage{
         click(openUserMenuBtn);
     }
 
+    @Step("Log out")
     public void logOut()
     {
         click(openUserMenuBtn);
-        List<WebElement> menuList =driver.findElements((By.cssSelector(".dropdown-menu>li")));
-        sleep(5000);
-        for (WebElement item : menuList)
-        {
-            System.out.println(item.getText());
-            if(item.getText().contentEquals("Log Out"))
-                click(item);
-        }
+        click(logOutBtn);
     }
 }

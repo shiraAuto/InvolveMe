@@ -26,6 +26,7 @@ public class LoginPage extends BasePage {
 
 
     public LoginPage(WebDriver driver) { super(driver); }
+
     @Step("login with email {0} and password {1}")
     public void  login(String userEmail , String userPassword) {
       fillText(emailField , userEmail );

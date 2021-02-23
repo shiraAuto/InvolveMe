@@ -42,16 +42,10 @@ public class LoginTest extends BaseTest{
     public void logOut() throws InterruptedException {
 
         ProjectsPage projPage = new ProjectsPage(driver);
-        /*
-        // explicit wait - to wait for the compose button to be click-able
-        WebDriverWait wait = new WebDriverWait(driver,30);
-        wait.until(ExpectedConditions.visibilityOfAllElements());
-        */
-        projPage.openMenuList();
         projPage.logOut();
-
-        // sleep(3000);
-        Assert.assertTrue(driver.getCurrentUrl().contentEquals("app.involve.me/login"));
+        Thread.sleep(5000);
+        System.out.println("Current_url: " + driver.getCurrentUrl());
+        Assert.assertTrue(driver.getCurrentUrl().contains("app.involve.me/login"));
     }
 
     @Story("As a User when I enter invalid username and password I will get an error message")
