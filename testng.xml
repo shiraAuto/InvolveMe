@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" verbose="1" >
+  <test name="Sanity" >
+    <classes>
+     
+      <class name="tests.LoginTest"/>
+     
+       <!--   
+        <class name="tests.ElementsTest"/>
+       <class name="tests.FormsTest"/>
+        -->
+        
+    </classes>
+ </test>
+</suite>
