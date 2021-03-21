@@ -10,13 +10,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ProjectsPage extends BasePage{
-/*
-    @FindBy(css=".dropdown-menu")
-    @CacheLookup
-    private List<WebElement> menuList;
-  */
+
+
     @FindBy(css=".dropdown>button")
     @CacheLookup
     private WebElement userMenuBtn;
@@ -28,6 +27,11 @@ public class ProjectsPage extends BasePage{
     @FindBy(css=".dropdown-menu>li:nth-child(13)>a")
     @CacheLookup
     private WebElement logOutBtn;
+
+    @FindBy(css=".flex-col>a")
+    @CacheLookup
+    private WebElement startBtn;
+
 
     public ProjectsPage(WebDriver driver) {super(driver); }
 
@@ -67,4 +71,56 @@ public class ProjectsPage extends BasePage{
         click(openUserMenuBtn);
         click(logOutBtn);
     }
+
+    @Step("Start new project")
+    public void startProject()
+    {
+        if (driver.getCurrentUrl().contentEquals("https://app.involve.me/projects"))
+            click(startBtn);
+        else
+            System.out.println("you are not in the projects page");
+
+    }
+
+     @Step("Print list project")
+     public void printOptionsList()
+     {
+         List<WebElement> optionList = driver.findElements(By.cssSelector("#app-layout > .container > div:nth-child(3) > div>a>div"));
+         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+         /* WebElement currentItem;*/
+         /* Both loops act the same.
+         for (int i=0;i< optionList.size();i++)
+         {
+             currentItem=optionList.get(i);
+             System.out.println(currentItem.findElement(By.className("title")).getText());
+         }
+         */
+
+        for( WebElement item : optionList)
+           System.out.println(item.findElement(By.className("title")).getText());
+     }
+
+     @Step("Choose project type {0}")
+     public boolean chooseProjectType(String type)
+     {
+         String current="";
+         List<WebElement> optionList = driver.findElements(By.cssSelector("#app-layout > .container > div:nth-child(3) > div>a>div"));
+         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+         for( WebElement item : optionList) {
+             current=item.findElement(By.className("title")).getText();
+             if (current.contentEquals(type)) {
+                 click(item);
+                 break;
+             }
+         }
+
+         sleep(4000);
+         String currentUrl = driver.getCurrentUrl();
+         System.out.println(currentUrl);
+         if (currentUrl.contains(type.toLowerCase()) && currentUrl.contains("templates"))
+             return true;
+         else
+             return false;
+
+     }
 }

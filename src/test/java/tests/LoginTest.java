@@ -26,7 +26,6 @@ public class LoginTest extends BaseTest{
     public void loginSuccessful() throws InterruptedException {
         HomePage homePage = new HomePage(driver);
         homePage.clickLogin();
-
         LoginPage loginPage = new LoginPage(driver);
       //  loginPage.login("shira.man2@gmail.com", "Mandel0206");
         loginPage.login(Utils.readProp("email"), Utils.readProp("password"));
@@ -51,17 +50,14 @@ public class LoginTest extends BaseTest{
     @Story("As a User when I enter invalid username and password I will get an error message")
     @Severity(SeverityLevel.NORMAL)
     @Description("Invalid username and password")
-   // @Test(priority = 3, description = "Log in failed")
+    @Test(priority = 3, description = "Log in failed")
     public void loginFailed() throws InterruptedException {
-        HomePage homePage = new HomePage(driver);
-        homePage.clickLogin();
+
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(Utils.readProp("email"), "123456");
         // System.out.println("invalid message " + loginPage.getInvalidDetailsMsg());
         Assert.assertEquals(INVALID_LOGIN_DETAILS,loginPage.getInvalidDetailsMsg());
 
     }
-    //public void loginFailed() throws InterruptedException {
-//
-  //  }
+
 }
